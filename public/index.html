@@ -1,0 +1,82 @@
+﻿<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brian Radaren</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="background-glow" aria-hidden="true"></div>
+    <div class="background-grid" aria-hidden="true"></div>
+    <div class="background-flare" aria-hidden="true"></div>
+
+    <header class="hero">
+      <div class="hero-tags" aria-hidden="true">
+        <span class="tag tag-hot">BOMBS</span>
+        <span class="tag tag-cold">TECHNO</span>
+        <span class="tag tag-chrome">CULT SHAKER</span>
+      </div>
+      <h1>BRIAN RADAREN</h1>
+      <p class="subtitle">
+        50 seneste artikler hvor <strong>Brian</strong> indg&aring;r.
+      </p>
+      <p class="subline">GODSTOGSMENTALITET</p>
+      <div class="equalizer" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="hero-controls">
+        <button id="refreshBtn" type="button">HENT FRISKE NYHEDER</button>
+        <p id="statusText" class="status-text">Indl&aelig;ser data...</p>
+      </div>
+      <section class="meta-bar" aria-label="Statistik">
+        <article class="meta-block">
+          <p class="meta-label">Senest opdateret</p>
+          <p id="updatedAt" class="meta-value">-</p>
+        </article>
+        <article class="meta-block">
+          <p class="meta-label">Resultater</p>
+          <p id="resultCount" class="meta-value">-</p>
+        </article>
+        <article class="meta-block">
+          <p class="meta-label">Kilder online</p>
+          <p id="sourceCount" class="meta-value">-</p>
+        </article>
+      </section>
+    </header>
+
+    <main class="content">
+      <section class="news-section">
+        <div class="news-header">
+          <h2>NYHEDSFEED // BRIAN ONLY</h2>
+          <p id="coverageNote" class="coverage-note"></p>
+        </div>
+        <p id="errorBox" class="error-box" hidden></p>
+        <ul id="newsList" class="news-list"></ul>
+        <p id="emptyState" class="empty-state" hidden>
+          Ingen matches lige nu. Pr&oslash;v igen om lidt.
+        </p>
+      </section>
+    </main>
+
+    <template id="newsItemTemplate">
+      <li class="news-item">
+        <a class="news-title" target="_blank" rel="noopener noreferrer"></a>
+        <p class="news-summary"></p>
+        <div class="news-meta">
+          <span class="news-date"></span>
+        </div>
+      </li>
+    </template>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

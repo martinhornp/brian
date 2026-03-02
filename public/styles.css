@@ -1,0 +1,526 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=Racing+Sans+One&family=Teko:wght@400;500;600;700&display=swap");
+
+:root {
+  --asphalt: #0b0c0f;
+  --charcoal: #161a20;
+  --panel: #1b2128;
+  --panel-alt: #11161c;
+  --chrome: #e8edf2;
+  --smoke: #95a3b1;
+  --nitro: #ff5f1f;
+  --neon: #00ddff;
+  --hazard: #ffd447;
+  --ok: #d3ff62;
+  --alert: #ff7777;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Teko", sans-serif;
+  letter-spacing: 0.01em;
+  color: var(--chrome);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(255, 95, 31, 0.22), transparent 30%),
+    radial-gradient(circle at 86% 14%, rgba(0, 221, 255, 0.2), transparent 30%),
+    radial-gradient(circle at 50% 120%, rgba(255, 212, 71, 0.1), transparent 48%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.012) 0 7px,
+      rgba(0, 0, 0, 0.07) 7px 14px
+    ),
+    linear-gradient(180deg, #090a0d, #10141a 38%, #0a0d11);
+  overflow-x: hidden;
+}
+
+.background-glow {
+  position: fixed;
+  inset: -8vh -10vw auto;
+  height: 30vh;
+  background: linear-gradient(
+    90deg,
+    transparent 0,
+    rgba(255, 95, 31, 0.38) 35%,
+    rgba(0, 221, 255, 0.3) 50%,
+    rgba(255, 95, 31, 0.38) 65%,
+    transparent 100%
+  );
+  filter: blur(30px);
+  transform: rotate(-4deg);
+  animation: streak 5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.background-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: radial-gradient(circle at 50% 20%, #000 38%, transparent 85%);
+  pointer-events: none;
+}
+
+.background-flare {
+  position: fixed;
+  inset: auto -20vw -18vh;
+  height: 36vh;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 212, 71, 0.16), transparent 62%);
+  pointer-events: none;
+}
+
+.hero {
+  position: relative;
+  width: min(1120px, 92vw);
+  margin: 2.4rem auto 1.5rem;
+  padding: 1.55rem 1.25rem 1.15rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 95, 31, 0.48);
+  background:
+    linear-gradient(175deg, rgba(30, 37, 46, 0.95), rgba(16, 22, 30, 0.93)),
+    var(--panel-alt);
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.52),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 9px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--hazard) 0 22px,
+    #111318 22px 44px
+  );
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  top: -70px;
+  right: -70px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 221, 255, 0.22), transparent 72%);
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.55rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.1rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+
+.tag-hot {
+  color: #1f130a;
+  border-color: rgba(255, 214, 158, 0.7);
+  background: linear-gradient(145deg, #ffc455, #ff7d2d);
+}
+
+.tag-cold {
+  color: #032630;
+  border-color: rgba(145, 242, 255, 0.72);
+  background: linear-gradient(145deg, #8cf0ff, #4be4ff);
+}
+
+.tag-chrome {
+  color: #1d252e;
+  border-color: rgba(255, 255, 255, 0.66);
+  background: linear-gradient(140deg, #f4f7fb, #b5c2ce);
+}
+
+h1 {
+  margin: 0.65rem 0 0.2rem;
+  font-family: "Racing Sans One", sans-serif;
+  font-size: clamp(2.2rem, 6vw, 4.8rem);
+  line-height: 0.96;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow:
+    0 0 22px rgba(255, 95, 31, 0.55),
+    0 0 48px rgba(0, 221, 255, 0.2);
+}
+
+.subtitle {
+  margin: 0;
+  max-width: 720px;
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  color: var(--chrome);
+}
+
+.subtitle strong {
+  color: var(--ok);
+  font-weight: 700;
+}
+
+.subline {
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.03rem, 1.65vw, 1.25rem);
+  color: var(--smoke);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.equalizer {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.32rem;
+  min-height: 1.9rem;
+}
+
+.equalizer span {
+  width: 0.52rem;
+  height: 0.85rem;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, var(--neon), var(--nitro));
+  box-shadow: 0 0 10px rgba(0, 221, 255, 0.35);
+  transform-origin: center bottom;
+  animation: bass 0.72s ease-in-out infinite;
+}
+
+.equalizer span:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.equalizer span:nth-child(3) {
+  animation-delay: 0.14s;
+}
+
+.equalizer span:nth-child(4) {
+  animation-delay: 0.22s;
+}
+
+.equalizer span:nth-child(5) {
+  animation-delay: 0.3s;
+}
+
+.equalizer span:nth-child(6) {
+  animation-delay: 0.38s;
+}
+
+.equalizer span:nth-child(7) {
+  animation-delay: 0.44s;
+}
+
+.equalizer span:nth-child(8) {
+  animation-delay: 0.52s;
+}
+
+.equalizer span:nth-child(9) {
+  animation-delay: 0.6s;
+}
+
+.hero-controls {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1rem;
+  align-items: center;
+}
+
+#refreshBtn {
+  min-height: 2.3rem;
+  padding: 0.2rem 1rem;
+  font-family: "Racing Sans One", sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: #111;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 12px;
+  background:
+    linear-gradient(160deg, #f6fbff, #b6c5d3 44%, #f9be53 82%, #ff7c2b);
+  cursor: pointer;
+  transition: transform 140ms ease, box-shadow 140ms ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+}
+
+#refreshBtn:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 10px 22px rgba(255, 95, 31, 0.34);
+}
+
+#refreshBtn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.status-text {
+  margin: 0;
+  color: var(--smoke);
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.meta-bar {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  gap: 0.65rem;
+}
+
+.meta-block {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  background:
+    linear-gradient(130deg, rgba(255, 255, 255, 0.06), transparent 40%),
+    linear-gradient(160deg, #1f2730, #141b22);
+}
+
+.meta-label {
+  margin: 0;
+  color: #aab8c5;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.meta-value {
+  margin: 0.1rem 0 0;
+  font-size: 1.18rem;
+  color: #f3fbff;
+}
+
+.content {
+  width: min(1120px, 92vw);
+  margin: 0 auto 3rem;
+}
+
+.news-section {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(178deg, rgba(31, 39, 48, 0.96), rgba(15, 20, 28, 0.93)),
+    var(--panel);
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.news-section::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--neon), var(--nitro), var(--hazard));
+}
+
+.news-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.news-header h2 {
+  margin: 0;
+  font-family: "Racing Sans One", sans-serif;
+  font-size: 1.33rem;
+  letter-spacing: 0.06em;
+  color: #dff9ff;
+}
+
+.coverage-note {
+  margin: 0;
+  font-size: 0.97rem;
+  color: #9db1c4;
+}
+
+.coverage-note:empty {
+  display: none;
+}
+
+.error-box {
+  margin: 0 0 1rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 119, 119, 0.62);
+  background: rgba(132, 27, 27, 0.35);
+  color: #ffd7d7;
+}
+
+.news-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.74rem;
+}
+
+.news-item {
+  position: relative;
+  padding: 0.82rem 0.86rem 0.8rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(130deg, rgba(255, 255, 255, 0.06), transparent 38%),
+    linear-gradient(160deg, #1d252d, #131a21);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: transform 130ms ease, border-color 130ms ease;
+  animation: rise 320ms ease both;
+}
+
+.news-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--neon), var(--nitro));
+}
+
+.news-item::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 78px;
+  height: 78px;
+  background: radial-gradient(circle at 100% 0, rgba(255, 255, 255, 0.1), transparent 70%);
+  pointer-events: none;
+}
+
+.news-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 95, 31, 0.48);
+}
+
+.news-title {
+  text-decoration: none;
+  color: #fff6d8;
+  font-size: 1.33rem;
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: 0.01em;
+}
+
+.news-title:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.news-summary {
+  margin: 0.42rem 0 0;
+  color: #d2dde8;
+  font-size: 1.04rem;
+  line-height: 1.18;
+}
+
+.news-meta {
+  margin-top: 0.62rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.42rem 0.85rem;
+  font-size: 0.89rem;
+  letter-spacing: 0.05em;
+}
+
+.news-date {
+  color: #b5c6d5;
+}
+
+.empty-state {
+  margin: 0.45rem 0 0;
+  color: #a4b7c8;
+  font-size: 1rem;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bass {
+  0%,
+  100% {
+    transform: scaleY(0.55);
+  }
+
+  50% {
+    transform: scaleY(1.75);
+  }
+}
+
+@keyframes streak {
+  from {
+    transform: rotate(-4deg) translateX(-3%);
+  }
+
+  to {
+    transform: rotate(-4deg) translateX(3%);
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    margin-top: 1.15rem;
+    padding: 1.25rem 0.92rem 0.95rem;
+  }
+
+  .hero-tags {
+    gap: 0.42rem;
+  }
+
+  .tag {
+    font-size: 0.78rem;
+    min-height: 1.7rem;
+    padding-inline: 0.5rem;
+  }
+
+  .subline {
+    font-size: 0.98rem;
+  }
+
+  .news-header h2 {
+    font-size: 1.15rem;
+  }
+
+  .news-title {
+    font-size: 1.1rem;
+  }
+
+  .news-summary {
+    font-size: 0.98rem;
+  }
+}

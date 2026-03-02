@@ -1,0 +1,23 @@
+{
+  "name": "brian",
+  "version": "1.0.0",
+  "description": "Brian-style Danish news crawler website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "news",
+    "rss",
+    "denmark",
+    "crawler"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.2.1",
+    "rss-parser": "^3.13.0"
+  }
+}
