@@ -7,6 +7,11 @@ const BING_OFFSETS = [
   0, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 111, 121, 131, 141, 151, 161, 171,
   181, 191, 201,
 ];
+const GOOGLE_BACKFILL_QUERIES = [
+  '"Brian" site:.dk',
+  '"Brian" site:.dk -site:brianjamestrailers.dk',
+  "intitle:Brian site:.dk",
+];
 
 const SOURCES = [
   "https://www.dr.dk/nyheder/service/feeds/senestenyt",
@@ -26,6 +31,10 @@ const SOURCES = [
     const p = offset > 0 ? `&first=${offset}` : "";
     return `https://www.bing.com/news/search?q=${q}&format=rss&cc=dk&setlang=da-dk${p}`;
   }),
+  ...GOOGLE_BACKFILL_QUERIES.map(
+    (query) =>
+      `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=da&gl=DK&ceid=DK:da`
+  ),
 ];
 
 const cache = {
@@ -73,11 +82,13 @@ function parseRssItems(xml) {
       getTagValue(itemXml, "published") ||
       getTagValue(itemXml, "dc:date");
     const rawLink = decodeEntities(getTagValue(itemXml, "link"));
+    const sourceLabel = stripHtml(getTagValue(itemXml, "source"));
 
     return {
       title,
       description,
       rawLink,
+      sourceLabel,
       pubDate: normalizeWhitespace(pubDate),
     };
   });
@@ -119,7 +130,12 @@ function parseTimestamp(value) {
   return Number.isNaN(ts) ? 0 : ts;
 }
 
-function looksDanish(link) {
+function looksDanish(link, sourceLabel) {
+  const source = normalizeWhitespace(sourceLabel).toLowerCase();
+  if (source.includes(".dk")) {
+    return true;
+  }
+
   try {
     const host = new URL(link).hostname.toLowerCase();
     return host.includes(".dk") || host.endsWith(".dk");
@@ -182,13 +198,15 @@ async function buildPayload() {
       const summary = item.description;
       const title = item.title;
       const publishedTimestamp = parseTimestamp(item.pubDate);
-      const source = (() => {
-        try {
-          return new URL(link).hostname.replace(/^www\./i, "");
-        } catch {
-          return "ukendt";
-        }
-      })();
+      const source =
+        normalizeWhitespace(item.sourceLabel) ||
+        (() => {
+          try {
+            return new URL(link).hostname.replace(/^www\./i, "");
+          } catch {
+            return "ukendt";
+          }
+        })();
 
       return {
         id: `${title}|${link}`.slice(0, 300),
@@ -206,7 +224,7 @@ async function buildPayload() {
     if (!item.link || !item.title) {
       return false;
     }
-    if (!looksDanish(item.link)) {
+    if (!looksDanish(item.link, item.source)) {
       return false;
     }
 
@@ -275,4 +293,3 @@ module.exports = async (req, res) => {
     });
   }
 };
-
