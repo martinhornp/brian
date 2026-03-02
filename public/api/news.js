@@ -2,15 +2,46 @@ const KEYWORD = "brian";
 const MAX_RESULTS = 50;
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const SOURCE_TIMEOUT_MS = 3500;
+const NORDIC_SITE_FILTER = "(site:.dk OR site:.se OR site:.no)";
 
 const BING_OFFSETS = [
-  0, 11, 21, 31, 41, 51, 61, 71, 81, 91, 101, 111, 121, 131, 141, 151, 161, 171,
-  181, 191, 201,
+  0, 11, 21, 31, 41, 51, 61,
+];
+const BING_MARKETS = [
+  { cc: "dk", lang: "da-dk", siteFilter: "site:.dk" },
+  { cc: "se", lang: "sv-se", siteFilter: "site:.se" },
+  { cc: "no", lang: "no-no", siteFilter: "site:.no" },
 ];
 const GOOGLE_BACKFILL_QUERIES = [
-  '"Brian" site:.dk',
-  '"Brian" site:.dk -site:brianjamestrailers.dk',
-  "intitle:Brian site:.dk",
+  `"Brian" ${NORDIC_SITE_FILTER}`,
+  `"Brian" ${NORDIC_SITE_FILTER} -site:brianjamestrailers.dk`,
+  `intitle:Brian ${NORDIC_SITE_FILTER}`,
+];
+const GOOGLE_MARKETS = [
+  { hl: "da", gl: "DK", ceid: "DK:da" },
+  { hl: "sv", gl: "SE", ceid: "SE:sv" },
+  { hl: "no", gl: "NO", ceid: "NO:no" },
+];
+const NORDIC_SOURCE_HINTS = [
+  "dr",
+  "tv 2",
+  "tv2",
+  "politiken",
+  "berlingske",
+  "ekstra bladet",
+  "jyllands-posten",
+  "information",
+  "altinget",
+  "aftonbladet",
+  "expressen",
+  "svt",
+  "svd",
+  "dn.se",
+  "vg",
+  "nrk",
+  "dagbladet",
+  "tv2.no",
+  "aftenposten",
 ];
 
 const SOURCES = [
@@ -26,14 +57,18 @@ const SOURCES = [
   "https://www.tvmidtvest.dk/rss",
   "https://www.tvsyd.dk/rss",
   "https://www.tv2east.dk/rss",
-  ...BING_OFFSETS.map((offset) => {
-    const q = encodeURIComponent(`"Brian" site:.dk`);
-    const p = offset > 0 ? `&first=${offset}` : "";
-    return `https://www.bing.com/news/search?q=${q}&format=rss&cc=dk&setlang=da-dk${p}`;
-  }),
-  ...GOOGLE_BACKFILL_QUERIES.map(
-    (query) =>
-      `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=da&gl=DK&ceid=DK:da`
+  ...BING_MARKETS.flatMap((market) =>
+    BING_OFFSETS.map((offset) => {
+      const q = encodeURIComponent(`"Brian" ${market.siteFilter}`);
+      const p = offset > 0 ? `&first=${offset}` : "";
+      return `https://www.bing.com/news/search?q=${q}&format=rss&cc=${market.cc}&setlang=${market.lang}${p}`;
+    })
+  ),
+  ...GOOGLE_MARKETS.flatMap((market) =>
+    GOOGLE_BACKFILL_QUERIES.map(
+      (query) =>
+        `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=${market.hl}&gl=${market.gl}&ceid=${market.ceid}`
+    )
   ),
 ];
 
@@ -130,15 +165,25 @@ function parseTimestamp(value) {
   return Number.isNaN(ts) ? 0 : ts;
 }
 
-function looksDanish(link, sourceLabel) {
+function looksNordic(link, sourceLabel) {
   const source = normalizeWhitespace(sourceLabel).toLowerCase();
-  if (source.includes(".dk")) {
+  if (source.includes(".dk") || source.includes(".se") || source.includes(".no")) {
+    return true;
+  }
+  if (NORDIC_SOURCE_HINTS.some((hint) => source.includes(hint))) {
     return true;
   }
 
   try {
     const host = new URL(link).hostname.toLowerCase();
-    return host.includes(".dk") || host.endsWith(".dk");
+    return (
+      host.includes(".dk") ||
+      host.endsWith(".dk") ||
+      host.includes(".se") ||
+      host.endsWith(".se") ||
+      host.includes(".no") ||
+      host.endsWith(".no")
+    );
   } catch {
     return false;
   }
@@ -224,7 +269,7 @@ async function buildPayload() {
     if (!item.link || !item.title) {
       return false;
     }
-    if (!looksDanish(item.link, item.source)) {
+    if (!looksNordic(item.link, item.source)) {
       return false;
     }
 
